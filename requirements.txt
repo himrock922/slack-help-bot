@@ -1,0 +1,4 @@
+slackclient==1.0.1
+Cython==0.24.1
+Kivy==1.9.1
+Pygame==1.9.2b6
