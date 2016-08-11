@@ -4,7 +4,6 @@ from kivy.app import App
 from kivy.uix.widget import Widget
 from kivy.resources import resource_add_path
 from kivy.core.text import LabelBase, DEFAULT_FONT
-
 resource_add_path('mplus-TESTFLIGHT-061')
 LabelBase.register(DEFAULT_FONT, 'mplus-1p-light.ttf')
 from kivy.lang import Builder
