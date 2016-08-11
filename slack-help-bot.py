@@ -1,10 +1,14 @@
 # - *- coding: utf-8 -*
 import time
 import re
+import signal
+import os
+import multiprocessing as mp
 from slackclient import SlackClient
 from token_restore import TokenInput
 
 class SlackHelpBot:
+  signal.signal(signal.SIGINT, signal.SIG_DFL)
   # Token Conf read 
   token = ""
   try:
@@ -13,7 +17,7 @@ class SlackHelpBot:
     print("token.txt cannot be opened.")
     TokenInput().run()
     wfile = open("token.txt", "w")
-    wfile.write("xoxb-66942301970-GTMskeNJCcAXkZE1QQgDgMPy")
+    wfile.writelines(token)
     wfile.close
     rfile = open("token.txt", "r")
   else:
@@ -32,7 +36,7 @@ class SlackHelpBot:
             SlackHelpBot.sc.rtm_send_message("test-help-bot", self.create_message(item))
             time.sleep(1)
     else:
-      print "Connection Failed, invalid token?"
+      print("Connection Failed, invalid token?")
  
   def create_message(self, data):
     if "type" in data.keys():
