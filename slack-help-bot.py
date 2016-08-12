@@ -14,11 +14,22 @@ class SlackHelpBot:
   ######################
 
   sc = SlackClient(token.info())
+  api_test = sc.api_call("api.test")
+  # Check read API Token
+  if api_test["ok"] == ("false", re.I):
+     print("Connection Failed, invalid token?")
+     sys.exit()
+  ######################
+  # ouput of own bot info
+  rtm_start = sc.api_call("rtm.start")
+  bot_info = rtm_start['self']
+  print(bot_info)
+  #######################
   def __init__(self):
     if SlackHelpBot.sc.rtm_connect():
       while True:
         data = SlackHelpBot.sc.rtm_read()
-
+       
         if len(data) > 0:
           for item in data:
             SlackHelpBot.sc.rtm_send_message("test-help-bot", self.create_message(item))
