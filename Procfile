@@ -1,1 +1,1 @@
-web: gunicorn app:aoo --log-gile -
+web: gunicorn app:app --log-gile -
