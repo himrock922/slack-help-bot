@@ -4,7 +4,6 @@ import re
 import signal
 import os
 import sys
-import multiprocessing as mp
 from slackclient import SlackClient
 from token_restore import TokenInput
 
