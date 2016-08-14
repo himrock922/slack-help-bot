@@ -1,1 +1,1 @@
-web: python slack-help-bot.py --log-file -
+web: python slack-help-bot.py
