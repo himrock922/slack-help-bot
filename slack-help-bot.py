@@ -15,6 +15,7 @@ class SlackHelpBot:
     ######################
     status = 0
     heroku_time = 21600
+    channel = ""
     sc = SlackClient(token.info())
     # Check read API Token
     api_test = sc.api_call("api.test")
@@ -28,6 +29,11 @@ class SlackHelpBot:
     #######################
     bot_info = rtm_start['self']
     bot_id = bot_info["id"]
+    
+    channel_list = sc.api_call("channels.list")
+    if channel_list["ok"] == status:
+      error_message(channel_list["error"])
+    print(channel_list["channels"])
     if sc.rtm_connect():
       while True:
         data = sc.rtm_read()
