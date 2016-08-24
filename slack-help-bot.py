@@ -4,19 +4,31 @@ import re
 import signal
 import os
 import sys
+import argparse
 from slackclient import SlackClient
 from token_restore import TokenInput
 
 class SlackHelpBot:
   signal.signal(signal.SIGINT, signal.SIG_DFL)
   def __init__(self):
-    # Token Conf read 
-    token = TokenInput()
-    ######################
+    token = ""
     status = 0
     heroku_time = 21600
     channel = ""
-    sc = SlackClient(token.info())
+    # Parse Set
+    parser = argparse.ArgumentParser(prog='python slack-help-bot.py')
+    parser.add_argument("-t", "--token", type=str, default="", help="Slack Access Token") # Store Token
+    parser.add_argument("-c", "--channel", default="", help="Slack Channel") # Store Channel
+    args = parser.parse_args()
+    #########################
+    # Token Conf read
+    if args.token:
+      token = args.token
+      sc = SlackClient(token)
+    else:
+      token = TokenInput()
+      sc = SlackClient(token.info())
+    ######################
     # Check read API Token
     api_test = sc.api_call("api.test")
     if api_test["ok"] == status:
@@ -29,8 +41,12 @@ class SlackHelpBot:
     #######################
     bot_info = rtm_start['self']
     bot_id = bot_info["id"]
-    channel = self.restore_channel_list(sc, status)
-    print(channel)
+    # Channel Info read
+    if args.channel:
+      channel = args.channel
+    else:
+      channel = self.restore_channel_list(sc, status)
+    print("Join Channel:" + channel)
     if sc.rtm_connect():
       while True:
         data = sc.rtm_read()
@@ -72,6 +88,7 @@ class SlackHelpBot:
           message_channel = channel
     finally:
       return message_channel.strip()
+
   # Default Message of Bot.
   def default_message(self, params, sc, channel):
     sc.rtm_send_message(channel, "<@" + params["user"] + "> " + u"ごめんw それ分からないw")
