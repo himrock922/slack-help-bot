@@ -1,1 +1,0 @@
-bot: python slack-help-bot.py -t xoxb-66942301970-bUGC9gZOd8IOXMtBVsIDG2bG -c general
