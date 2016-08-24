@@ -66,6 +66,7 @@ class SlackHelpBot:
 
   # restore of channel list
   def restore_channel_list(self, sc, status):
+    bot_channel = ""
     message_channel = ""
     try:
       rfile = open("channel_list.txt", "r")
@@ -76,15 +77,19 @@ class SlackHelpBot:
       channel_list = sc.api_call("channels.list")
       if channel_list["ok"] == status:
         self.error_message(channel_list["error"])
+      print("Please send message for Slack Bot.")
+      bot_channel = input()
       for channel in channel_list["channels"]:
-        if channel["name"].find("test-help-bot") >= 0:
-          channel = channel["name"]
+        if channel["name"].find(bot_channel) >= 0:
+          message_channel = channel["name"]
         wfile.write(channel["name"])
         wfile.write('\n')
     else:
       channel_list = rfile.readlines()
+      print("Please send message for Slack Bot.")
+      bot_channel = input()
       for channel in channel_list:
-        if channel.find("test-help-bot") >= 0:
+        if channel.find(bot_channel) >= 0:
           message_channel = channel
     finally:
       return message_channel.strip()
