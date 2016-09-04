@@ -51,6 +51,7 @@ class SlackHelpBot:
       while True:
         data = sc.rtm_read()
         if len(data) > 0:
+          time.sleep(1)
           for params in data:
              if "type" in params.keys():
                if params["type"] == "message":
@@ -59,8 +60,12 @@ class SlackHelpBot:
                      self.sleep_message(sc, params, heroku_time, channel)
                    elif re.search(u"(.*mention.*|.*返信.*)", params["text"]) is not None:
                      self.mention_help_message(params, sc, channel)
+                   elif re.search(u"(.*profile.*|.*プロフィール.*|.*editing.*|.*編集.*)"u"(.*profile.*|.*プロフィール.*|.*editing.*|.*編集.*)", params["text"]) is not None:     
+                     self.editing_your_profile_message(params, sc, channel)
                    else:
                      self.default_message(params, sc, channel)
+                 else:
+                   next
     else:
       print("Connection Failed, invalid token?")
 
@@ -98,7 +103,13 @@ class SlackHelpBot:
   def default_message(self, params, sc, channel):
     sc.rtm_send_message(channel, "<@" + params["user"] + "> " + u"ごめんw それ分からないw")
   #####################
-
+ 
+  def editing_your_profile_message(self, params, sc, channel):
+    sc.rtm_send_message(channel, "<@" + params["user"] + "> " + u"Slackで使っているプロフィール情報を変更できるよ!"
+    + "アイコンだけじゃなく、苗字や名前も変更できるよ!"
+    + "チームメニューからプロフィール&アカウントを選んでね!"
+    + "もっと詳しく知りたい場合は下のURLへジャンプ!"
+    + "https://get.slack.help/hc/en-us/articles/204092246-Editing-your-profile")
   # Mention Help Message of Bot.
   def mention_help_message(self, params, sc, channel):
     if re.search(u"(.*mention.*|.*返信.*)", params["text"]) is not None:
