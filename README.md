@@ -17,12 +17,15 @@
 ## install(Mac)
 
  * pyenv + virtualenvの場合
+ 
+ ``` shell
  $ git clone https://github.com/himrock922/slack-help-bot
  $ cd slack-help-bot
  $ pyenv install 3.5.2
  $ pyenv virtualenv 3.5.2 slack-help-bot
  $ pip install -r requirements.txt
- 
+ ```
+
 ## Hot to use
 
  * python slack-help-bot.py
